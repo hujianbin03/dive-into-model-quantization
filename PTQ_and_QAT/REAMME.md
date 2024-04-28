@@ -62,7 +62,7 @@ QAT量化中最重要的就是FQ(Fake-Quan)量化算子，即QDQ算子，它负�
 scale.
 
 QDQ实际上就是做了量化和反量化的过程，假设输入为3x3，其QDQ算子会做如下计算：
-![qdq_cal.png](..%2Fassets%2Fpic%2Fqdq_cal.png)
+![qdq_cal.png](../assets/pic/qdq_cal.png)
 
 QDQ的用途主要体现在两方面：
 * 第一个是可以存储量化信息，比如scale和zero_point，这些信息可以放在Q和DQ操作中
