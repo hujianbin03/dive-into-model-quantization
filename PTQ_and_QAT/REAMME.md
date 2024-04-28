@@ -73,7 +73,7 @@ QDQ的用途主要体现在两方面：
 是借助tensorRT的内部量化算法去量化(闭源)，在构建engine的时候传入图像进行校准，执行的是训练后量化(PTQ)的过程。
 
 而有了QDQ信息，tensorRT在解析模型的时候会根据QDQ的位置找到可量化的op，然后于QDQ融合(吸收尺度信息到op中)：
-![qdq_fusion_strategy.png](..%2Fassets%2Fpic%2Fqdq_fusion_strategy.png)
+![qdq_fusion_strategy.png](../assets/pic/qdq_fusion_strategy.png)
 
 因为 tensorRT8 可以直接加载通过 QAT 量化后导出为 onnx 的模型，官方也提供了 Pytorch 量化配套工具，可谓是一步到位。
 

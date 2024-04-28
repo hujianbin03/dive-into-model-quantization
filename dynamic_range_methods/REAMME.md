@@ -46,7 +46,7 @@ Histogram方法虽然能够解决Max方法中的离散点噪声问题，但是�
 在量化领域中，通常所用的熵(Entropy)是指量化后的输出值的熵，即量化后的概率分布。因此，使用熵方法计算动态范围就是在计算量化后的概率分布。那么我们该如何度量量化前后的误差呢？可以使用KL散度。
 
 在概率论或信息论中，KL散度(Kullback-Leibler divergence)又称为相对熵(relative entropy)，是描述两个概率分布P和Q差异的一种方法。
-![kl_divergence.png](..%2Fassets%2Fpic%2Fkl_divergence.png)
+![kl_divergence.png](../assets/pic/kl_divergence.png)
 
 KL散度值越小，代表两种分布越相似，量化误差越小；反之，KL散度值越大，代表二种分布差异越大，量化误差越大。
 
