@@ -3,12 +3,12 @@
 与原来的值又一个较大的误差，这对模型的精度影响非常大。  
 
 量化的流程中的计算公式如下：
-![base_quant.png](../assets/pic/base_quant.png)
+![base_quant.png](../assets/pic/asymmetric_quant.png)
 
 ### 2. 非对称量化
 #### 2.1 动态返回量化
 通过引入偏移量Z可以解决，具体公式如下
-![dynamic_range_quant.png](../assets/pic/dynamic_range_quant.png)
+![dynamic_range_quant.png](../assets/pic/random_quant.png)
 
 **动态范围量化**中的校准过程(Calibration)。它属于非对称量化的一种形式。由于量化参数(比如量化因子Scale)是通
 过数据集的统计量来估计的，因此称为动态范围量化。它能够减少量化误差的原因是，引入了一个偏移量Z，使得量化后的数值
