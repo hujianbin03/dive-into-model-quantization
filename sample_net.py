@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+from torch.nn import init
 from torch.ao.quantization import QuantStub, DeQuantStub
 
 
@@ -86,3 +87,52 @@ class CustomNet(nn.Module):
         if self.q:
             x = self.dequant(x)
         return x
+
+
+class SampleAlexNet(nn.Module):
+    def __init__(self, num_classes=10):
+        super().__init__()
+        self.input_channel = 3
+        self.num_output = num_classes
+
+        self.layer1 = nn.Sequential(
+            nn.Conv2d(in_channels=self.input_channel, out_channels=16, kernel_size=11, stride=4),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2)
+        )
+        init.xavier_uniform_(self.layer1[0].weight, gain=nn.init.calculate_gain('conv2d'))
+
+        self.layer2 = nn.Sequential(
+            nn.Conv2d(in_channels=16, out_channels=20, kernel_size=5, stride=1),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2)
+        )
+        init.xavier_uniform_(self.layer2[0].weight, gain=nn.init.calculate_gain('conv2d'))
+
+        self.layer3 = nn.Sequential(
+            nn.Conv2d(in_channels=20, out_channels=30, kernel_size=3, stride=1),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2)
+        )
+        init.xavier_uniform_(self.layer3[0].weight, gain=nn.init.calculate_gain('conv2d'))
+        self.layer4 = nn.Sequential(
+            nn.Linear(30 * 3 * 3, out_features=48),
+            nn.ReLU(inplace=True)
+        )
+        init.kaiming_normal_(self.layer4[0].weight, mode='fan_in')
+
+        self.layer5 = nn.Sequential(
+            nn.Linear(in_features=48, out_features=self.num_output)
+        )
+        init.kaiming_normal_(self.layer5[0].weight, mode='fan_in')
+
+    def forward(self, x):
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+
+        # Squeezes or flattens the image, but keeps the batch dimension
+        x = x.reshape(x.size(0), -1)
+        x = self.layer4(x)
+        logits = self.layer5(x)
+        return logits
