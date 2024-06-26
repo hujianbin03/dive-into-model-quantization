@@ -108,6 +108,7 @@ def train(model: nn.Module, dataloader: DataLoader, cuda=False, q=False, epochs=
                 print('[%d, %5d] ' %
                       (epoch + 1, i + 1), running_loss, acc)
     print('Finished Training')
+    return model
 
 
 def test(model: nn.Module, dataloader: DataLoader, cuda=False) -> float:
@@ -157,3 +158,38 @@ def get_mnist_data(batch_size=64, num_workers=0):
                                               pin_memory=True)
 
     return train_loader, test_loader
+
+
+def get_cifar10_data(batch_size=8, num_workers=0):
+    transform = transforms.Compose([
+        transforms.Resize(224),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])
+
+    train_set = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+    test_set = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
+
+    train_loader = torch.utils.data.DataLoader(train_set,
+                                               batch_size=batch_size,
+                                               shuffle=True,
+                                               num_workers=num_workers)
+
+    test_loader = torch.utils.data.DataLoader(test_set,
+                                              batch_size=batch_size,
+                                              shuffle=False,
+                                              num_workers=num_workers)
+
+    return train_loader, test_loader
+
+
+SAMPLE_ALEX_NET_PTH = './data/AlexNet.pth'
+
+
+def get_sample_alex_net(net, train_loader):
+    if os.path.exists(SAMPLE_ALEX_NET_PTH):
+        net.load_state_dict(torch.load(SAMPLE_ALEX_NET_PTH))
+    else:
+        train(net, train_loader)
+        torch.save(net.state_dict(), SAMPLE_ALEX_NET_PTH)
+
