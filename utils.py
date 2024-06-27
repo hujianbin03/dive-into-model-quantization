@@ -114,7 +114,7 @@ def train(model: nn.Module, dataloader: DataLoader, cuda=False, q=False, epochs=
 def test(model: nn.Module, dataloader: DataLoader, cuda=False) -> float:
     correct = 0
     total = 0
-    model.eval()
+    # model.eval()
     with torch.no_grad():
         for data in dataloader:
             inputs, labels = data
