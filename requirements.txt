@@ -1,0 +1,7 @@
+matplotlib==3.7.2
+numpy==1.23.5
+scipy==1.10.1
+torch==2.3.1
+torchvision==0.16.0
+tqdm==4.66.4
+urllib3==1.26.0
